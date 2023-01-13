@@ -1,0 +1,82 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: people
+  namespace: playground
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: people
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
+  template:
+    metadata:
+      labels:
+        app: people
+        environment: dev
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      restartPolicy: Always
+      containers:
+        - name: people
+          image: people-service-image
+          # Cannot use along with skaffold's image name replacement (it attempts to pull leading to an error,
+          # there is no registry to pull from..)
+          # imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsUser: 10000
+            runAsGroup: 10000
+          resources:
+            limits:
+              cpu: 500m
+              memory: 100Mi
+              ephemeral-storage: 1Gi
+            requests:
+              cpu: 500m
+              memory: 100Mi
+              ephemeral-storage: 1Gi
+          ports:
+            - containerPort: 8888
+          env:
+            - name: environment
+              value: dev
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8888
+            initialDelaySeconds: 2
+            periodSeconds: 10
+      initContainers:
+        - name: people-init
+          image: ghcr.io/groundnuty/k8s-wait-for:no-root-v2.0
+          args: ["job-wr", "database-init"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsUser: 10000
+            runAsGroup: 10000
+          resources:
+            limits:
+              cpu: 500m
+              memory: 100Mi
+              ephemeral-storage: 10Mi
+            requests:
+              cpu: 500m
+              memory: 100Mi
+              ephemeral-storage: 10Mi

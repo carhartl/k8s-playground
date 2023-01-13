@@ -1,0 +1,51 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+
+	"github.com/yugabyte/pgx/v4"
+)
+
+const (
+	host     = "yb-tservers.yugabytedb-system"
+	port     = 5433
+	user     = "yugabyte"
+	password = "yugabyte"
+	dbname   = "yugabyte"
+)
+
+func main() {
+	conn, err := pgx.Connect(context.Background(), fmt.Sprintf("postgres://%s:%s@%s:%d/%s",
+		user, password, host, port, dbname))
+	if err != nil {
+		panic(err)
+	}
+	defer func() { _ = conn.Close(context.Background()) }()
+
+	_, err = conn.Exec(context.Background(), `
+		CREATE EXTENSION IF NOT EXISTS pgcrypto;
+		CREATE TABLE IF NOT EXISTS people (
+			id uuid PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+			email text,
+			first_name text,
+			last_name text
+		);
+	`)
+	if err != nil {
+		panic(err)
+	}
+
+	f, err := os.Open("/data/people.csv")
+	if err != nil {
+		panic(err)
+	}
+	defer func() { _ = f.Close() }()
+
+	res, err := conn.PgConn().CopyFrom(context.Background(), f, "COPY people(email,first_name,last_name) FROM STDIN (FORMAT csv, HEADER true)")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Print(res.RowsAffected())
+}

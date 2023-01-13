@@ -1,0 +1,20 @@
+---
+apiVersion: skaffold/v4beta1
+kind: Config
+manifests:
+  kustomize:
+    paths:
+      - infra/manifests/overlays/dev
+    buildArgs:
+      - --enable-helm
+build:
+  artifacts:
+    - image: people-service-image
+      context: app
+    - image: people-db-init
+      context: data
+portForward:
+  - resourceType: deployment
+    resourceName: people
+    namespace: playground
+    port: 8888

@@ -1,0 +1,56 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - rbac-service-account.yaml
+helmCharts:
+  - name: yugabyte
+    releaseName: yugabytedb
+    repo: https://charts.yugabyte.com
+    version: 2.17.0
+    namespace: yugabytedb-system
+    valuesInline:
+      podSecurityContext:
+        enabled: true
+      enableLoadBalancer: false
+      replicas:
+        master: 1
+        tserver: 1
+      resource:
+        master:
+          requests:
+            cpu: 0.5
+            memory: 0.5Gi
+        tserver:
+          requests:
+            cpu: 0.5
+            memory: 0.5Gi
+patches:
+  # Kustomize with helm enabled executes `helm template`, where helm fakes particular
+  # built-in template values such as .Capabilities.APIVersions and we end up in the
+  # wrong branch here:
+  # https://github.com/yugabyte/charts/blob/6e4936750fd8aaa98e2c848670af0208a7491327/stable/yugabyte/templates/service.yaml#L628
+  #
+  # Thus manually patching this to make installing the yugabyte chart work with K8s 1.25:
+  - patch: |-
+      - op: replace
+        path: /apiVersion
+        value: policy/v1
+    target:
+      group: policy
+      version: v1beta1
+      kind: PodDisruptionBudget
+  # It appears that in Yugabyte's helm chart the namespace value isn't picked up in the
+  # template for the services. Thus these ended up in "default", breaking accessing the db
+  # via `kubectl --namespace yugabytedb-system exec -it yb-tserver-0 -- \
+  #   sh -c "cd /home/yugabyte && ysqlsh -h yb-tserver-0 --echo-queries"`
+  # => https://github.com/yugabyte/charts/issues/151
+  - patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: yugabytedb-system
+    target:
+      version: v1
+      kind: Service
+      name: yb-.*

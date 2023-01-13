@@ -1,0 +1,65 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: database-init
+  namespace: playground
+spec:
+  template:
+    metadata:
+      labels:
+        app: people
+        environment: dev
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: people-db-init
+          image: people-db-init
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsUser: 10000
+            runAsGroup: 10000
+          resources:
+            limits:
+              cpu: 500m
+              memory: 100Mi
+              ephemeral-storage: 10Mi
+            requests:
+              cpu: 500m
+              memory: 100Mi
+              ephemeral-storage: 10Mi
+      initContainers:
+        - name: wait-for-db
+          image: busybox:1.28
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsUser: 10000
+            runAsGroup: 10000
+          resources:
+            limits:
+              cpu: 500m
+              memory: 100Mi
+              ephemeral-storage: 10Mi
+            requests:
+              cpu: 500m
+              memory: 100Mi
+              ephemeral-storage: 10Mi
+          command:
+            [
+              "sh",
+              "-c",
+              "until nslookup yb-tservers.yugabytedb-system; do echo waiting for yb-tservers; sleep 2; done",
+            ]
+      restartPolicy: Never
+  backoffLimit: 4
