@@ -13,6 +13,5 @@ pre-commit:
         yamllint -d "{extends: default, rules: {line-length: {max: 120}}}" {staged_files}
     golangci:
       tags: lint
-      root: app/
       glob: "*.go"
-      run: golangci-lint run ./...
+      run: golangci-lint run {app,data}/...
