@@ -1,0 +1,27 @@
+---
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/app"
+    schedule:
+      interval: "daily"
+    # Too much noise with patch releases...
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
+  - package-ecosystem: "gomod"
+    directory: "/data"
+    schedule:
+      interval: "daily"
+    # Too much noise with patch releases...
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    # Too much noise with patch releases...
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
