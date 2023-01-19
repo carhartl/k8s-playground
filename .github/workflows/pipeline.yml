@@ -17,6 +17,7 @@ jobs:
         with:
           go-version-file: app/go.mod
           cache: true
+          cache-dependency-path: app/go.sum
       - name: golangci-lint app
         uses: golangci/golangci-lint-action@0ad9a0988b3973e851ab0a07adf248ec2e100376
         with:
