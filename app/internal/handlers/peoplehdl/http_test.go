@@ -76,9 +76,9 @@ func TestCreate(t *testing.T) {
 		Expect().
 		Status(http.StatusBadRequest)
 
-	e.POST("/people").WithBytes([]byte(`{"name":"foo"}`)).
+	e.POST("/people").WithBytes([]byte(`{"firstName":"foo"}`)).
 		Expect().
 		Status(http.StatusOK).
-		JSON().Object().ContainsKey("name")
+		JSON().Object().ContainsKey("firstName")
 
 }
