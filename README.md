@@ -1,5 +1,7 @@
 # GoLang K8s Playground
 
+[![Pipeline](https://github.com/carhartl/golang-k8s-playground/actions/workflows/pipeline.yml/badge.svg)](https://github.com/carhartl/golang-k8s-playground/actions/workflows/pipeline.yml)
+
 ## Prerequisites
 
 [Minikube](https://minikube.sigs.k8s.io/docs/start/) (with Kubernetes 1.25 or later), [Skaffold](https://skaffold.dev), [helm](https://helm.sh) (3.4 or later), [kubectl](https://kubectl.docs.kubernetes.io/guides/introduction/kubectl/), [kustomize](https://kubectl.docs.kubernetes.io/guides/introduction/kustomize/):
