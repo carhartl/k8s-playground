@@ -35,6 +35,8 @@ jobs:
 
   vulnerability-scan:
     runs-on: ubuntu-latest
+    needs:
+      - build
     permissions:
       contents: read
       security-events: write
