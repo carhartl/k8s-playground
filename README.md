@@ -1,6 +1,7 @@
 # GoLang K8s Playground
 
 [![Pipeline](https://github.com/carhartl/golang-k8s-playground/actions/workflows/pipeline.yml/badge.svg)](https://github.com/carhartl/golang-k8s-playground/actions/workflows/pipeline.yml)
+[![Vulnerability Scan](https://github.com/carhartl/golang-k8s-playground/actions/workflows/vulnerability-scan.yml/badge.svg)](https://github.com/carhartl/golang-k8s-playground/actions/workflows/vulnerability-scan.yml)
 
 ## Prerequisites
 
