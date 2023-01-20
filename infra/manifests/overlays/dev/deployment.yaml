@@ -29,7 +29,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: people
-          image: people-service-image
+          image: ghcr.io/carhartl/golang-k8s-playground/app
           # Cannot use along with skaffold's image name replacement (it attempts to pull leading to an error,
           # there is no registry to pull from..)
           # imagePullPolicy: Always

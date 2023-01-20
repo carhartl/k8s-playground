@@ -9,9 +9,9 @@ manifests:
       - --enable-helm
 build:
   artifacts:
-    - image: people-service-image
+    - image: ghcr.io/carhartl/golang-k8s-playground/app
       context: app
-    - image: people-db-init
+    - image: ghcr.io/carhartl/golang-k8s-playground/database-init
       context: data
 portForward:
   - resourceType: deployment

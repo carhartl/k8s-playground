@@ -19,8 +19,8 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - name: people-db-init
-          image: people-db-init
+        - name: database-init
+          image: ghcr.io/carhartl/golang-k8s-playground/database-init
           env:
             - name: PGHOST
               value: "yb-tservers.yugabytedb-system"
