@@ -4,13 +4,13 @@
 
 ## Prerequisites
 
-[Minikube](https://minikube.sigs.k8s.io/docs/start/) (with Kubernetes 1.25 or later), [Skaffold](https://skaffold.dev), [helm](https://helm.sh) (3.4 or later), [kubectl](https://kubectl.docs.kubernetes.io/guides/introduction/kubectl/), [kustomize](https://kubectl.docs.kubernetes.io/guides/introduction/kustomize/):
+[Minikube](https://minikube.sigs.k8s.io/docs/start/) (with Kubernetes 1.25 or later), [Skaffold](https://skaffold.dev), [Helm](https://helm.sh) (3.4 or later), [Kubectl](https://kubectl.docs.kubernetes.io/guides/introduction/kubectl/), [Kustomize](https://kubectl.docs.kubernetes.io/guides/introduction/kustomize/):
 
 ```bash
 brew install helm kubectl kustomize minikube skaffold
 ```
 
-(Installing kubectl is not strictly necessary, Minikube comes with kubectl as well...)
+(Installing `kubectl` is not strictly necessary, Minikube comes with kubectl as well...)
 
 Optional, when using the [Lefthook](https://github.com/evilmartians/lefthook) based Git hooks setup:
 
