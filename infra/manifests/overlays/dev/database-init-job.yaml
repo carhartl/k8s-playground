@@ -19,6 +19,17 @@ spec:
       containers:
         - name: people-db-init
           image: people-db-init
+          env:
+            - name: PGHOST
+              value: "yb-tservers.yugabytedb-system"
+            - name: PGPORT
+              value: "5433"
+            - name: PGUSER
+              value: "yugabyte"
+            - name: PGPASSWORD
+              value: "yugabyte"
+            - name: PGDATABASE
+              value: "yugabyte"
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
