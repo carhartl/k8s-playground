@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/csv"
 	"fmt"
@@ -24,29 +25,23 @@ func getEnv(key, fallback string) string {
 }
 
 func main() {
-	f, err := os.Create("people.csv")
-	if err != nil {
+	var out bytes.Buffer
+	csv := csv.NewWriter(&out)
+	if err := csv.Write([]string{"email", "first_name", "last_name"}); err != nil {
 		panic(err)
 	}
-	defer f.Close()
-
-	w := csv.NewWriter(f)
-	defer w.Flush()
-	if err := w.Write([]string{"Email", "FirstName", "LastName"}); err != nil {
-		panic(err)
-	}
-
 	p := Person{}
 	for i := 0; i < 500; i++ {
-		err = faker.FakeData(&p)
+		err := faker.FakeData(&p)
 		if err != nil {
 			panic(err)
 		}
 		row := []string{p.Email, p.FirstName, p.LastName}
-		if err := w.Write(row); err != nil {
+		if err := csv.Write(row); err != nil {
 			panic(err)
 		}
 	}
+	csv.Flush()
 
 	conn, err := pgx.Connect(context.Background(), fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
 		getEnv("PGUSER", "postgres"),
@@ -72,9 +67,9 @@ func main() {
 		panic(err)
 	}
 
-	res, err := conn.PgConn().CopyFrom(context.Background(), f, "COPY people(email,first_name,last_name) FROM STDIN (FORMAT csv, HEADER true)")
+	res, err := conn.PgConn().CopyFrom(context.Background(), bytes.NewReader(out.Bytes()), "COPY people(email,first_name,last_name) FROM STDIN (FORMAT csv, HEADER true)")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Print(res.RowsAffected())
+	fmt.Printf("Database populated with %d records", res.RowsAffected())
 }
