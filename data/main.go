@@ -10,18 +10,17 @@ import (
 	"github.com/yugabyte/pgx/v4"
 )
 
-const (
-	host     = "yb-tservers.yugabytedb-system"
-	port     = 5433
-	user     = "yugabyte"
-	password = "yugabyte"
-	dbname   = "yugabyte"
-)
-
 type Person struct {
 	Email     string `faker:"email"`
 	FirstName string `faker:"first_name"`
 	LastName  string `faker:"last_name"`
+}
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
 }
 
 func main() {
@@ -49,8 +48,12 @@ func main() {
 		}
 	}
 
-	conn, err := pgx.Connect(context.Background(), fmt.Sprintf("postgres://%s:%s@%s:%d/%s",
-		user, password, host, port, dbname))
+	conn, err := pgx.Connect(context.Background(), fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
+		getEnv("PGUSER", "postgres"),
+		getEnv("PGPASSWORD", "postgres"),
+		getEnv("PGHOST", "localhost"),
+		getEnv("PGPORT", "5432"),
+		getEnv("PGDATABASE", "postgres")))
 	if err != nil {
 		panic(err)
 	}

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/carhartl/playground/internal/core/services/peoplesrv"
 	"github.com/carhartl/playground/internal/handlers/peoplehdl"
@@ -12,17 +13,20 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-const (
-	host     = "yb-tservers.yugabytedb-system"
-	port     = 5433
-	user     = "yugabyte"
-	password = "yugabyte"
-	dbname   = "yugabyte"
-)
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
+}
 
 func main() {
-	db, err := gorm.Open("postgres", fmt.Sprintf("host= %s port = %d user = %s password = %s dbname = %s sslmode=disable",
-		host, port, user, password, dbname))
+	db, err := gorm.Open("postgres", fmt.Sprintf("host= %s port = %s user = %s password = %s dbname = %s sslmode=disable",
+		getEnv("PGHOST", "localhost"),
+		getEnv("PGPORT", "5432"),
+		getEnv("PGUSER", "postgres"),
+		getEnv("PGPASSWORD", "postgres"),
+		getEnv("PGDATABASE", "postgres")))
 	if err != nil {
 		panic(err)
 	}

@@ -31,6 +31,17 @@ spec:
           # Cannot use along with skaffold's image name replacement (it attempts to pull leading to an error,
           # there is no registry to pull from..)
           # imagePullPolicy: Always
+          env:
+            - name: PGHOST
+              value: "yb-tservers.yugabytedb-system"
+            - name: PGPORT
+              value: "5433"
+            - name: PGUSER
+              value: "yugabyte"
+            - name: PGPASSWORD
+              value: "yugabyte"
+            - name: PGDATABASE
+              value: "yugabyte"
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -50,9 +61,6 @@ spec:
               ephemeral-storage: 1Gi
           ports:
             - containerPort: 8888
-          env:
-            - name: environment
-              value: dev
           readinessProbe:
             httpGet:
               path: /healthz
@@ -63,6 +71,17 @@ spec:
         - name: people-init
           image: ghcr.io/groundnuty/k8s-wait-for:no-root-v2.0
           args: ["job-wr", "database-init"]
+          env:
+            - name: PGHOST
+              value: "yb-tservers.yugabytedb-system"
+            - name: PGPORT
+              value: "5433"
+            - name: PGUSER
+              value: "yugabyte"
+            - name: PGPASSWORD
+              value: "yugabyte"
+            - name: PGDATABASE
+              value: "yugabyte"
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
