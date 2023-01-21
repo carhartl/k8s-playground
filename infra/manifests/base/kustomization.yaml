@@ -26,6 +26,11 @@ helmCharts:
           requests:
             cpu: 0.5
             memory: 0.5Gi
+  - name: kyverno
+    releaseName: kyverno
+    repo: https://kyverno.github.io/kyverno/
+    version: 2.7.0-rc.2
+    namespace: kyverno
 patches:
   # Kustomize with helm enabled executes `helm template`, where helm fakes particular
   # built-in template values such as .Capabilities.APIVersions and we end up in the

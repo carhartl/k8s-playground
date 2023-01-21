@@ -13,3 +13,8 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: yugabytedb-system
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kyverno
