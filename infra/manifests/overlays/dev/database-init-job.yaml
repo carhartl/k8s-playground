@@ -23,7 +23,7 @@ spec:
           image: ghcr.io/carhartl/golang-k8s-playground/database-init
           env:
             - name: PGHOST
-              value: "yb-tservers.yugabytedb-system"
+              value: "yb-tservers.yugabyte"
             - name: PGPORT
               value: "5433"
             - name: PGUSER
@@ -69,7 +69,7 @@ spec:
             [
               "sh",
               "-c",
-              "until nslookup yb-tservers.yugabytedb-system; do echo waiting for yb-tservers; sleep 2; done",
+              "until nslookup yb-tservers.yugabyte; do echo waiting for yb-tservers; sleep 2; done",
             ]
       restartPolicy: Never
   backoffLimit: 4

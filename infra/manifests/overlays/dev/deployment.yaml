@@ -35,7 +35,7 @@ spec:
           # imagePullPolicy: Always
           env:
             - name: PGHOST
-              value: "yb-tservers.yugabytedb-system"
+              value: "yb-tservers.yugabyte"
             - name: PGPORT
               value: "5433"
             - name: PGUSER
@@ -73,7 +73,7 @@ spec:
           args: ["job-wr", "database-init"]
           env:
             - name: PGHOST
-              value: "yb-tservers.yugabytedb-system"
+              value: "yb-tservers.yugabyte"
             - name: PGPORT
               value: "5433"
             - name: PGUSER

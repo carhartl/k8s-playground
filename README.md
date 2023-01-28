@@ -38,5 +38,5 @@ skaffold dev
 Access the database:
 
 ```bash
-kubectl --namespace yugabytedb-system exec -it yb-tserver-0 -- sh -c "cd /home/yugabyte && ysqlsh -h yb-tserver-0 --echo-queries"
+kubectl -n yugabyte exec -it yb-tserver-0 -- sh -c "cd /home/yugabyte && ysqlsh -h yb-tserver-0 --echo-queries"
 ```
