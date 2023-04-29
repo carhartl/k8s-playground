@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version-file: app/go.mod
-          cache: true
+          check-latest: true
           cache-dependency-path: app/go.sum
       - name: golangci-lint
         # Third-party action, pin to commit SHA!
@@ -45,7 +45,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version-file: app/go.mod
-          cache: true
+          check-latest: true
           cache-dependency-path: app/go.sum
       - name: Set up Docker Buildx
         # Third-party action, pin to commit SHA!
@@ -105,7 +105,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version-file: app/go.mod
-          cache: true
+          check-latest: true
           cache-dependency-path: app/go.sum
       - name: Set up Docker Buildx
         # Third-party action, pin to commit SHA!
