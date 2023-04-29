@@ -139,4 +139,4 @@ jobs:
         with:
           name: "vuln.json"
       - name: Attest vulnerability scan
-        run: cosign attest --yes --replace --predicate vuln.json --type vuln ${{ env.CONTAINER_REGISTRY }}/${{ env.CONTAINER_IMAGE_NAME }}:${{ steps.docker-build.outputs.digest }}
+        run: cosign attest --yes --replace --predicate vuln.json --type vuln ${{ env.CONTAINER_REGISTRY }}/${{ env.CONTAINER_IMAGE_NAME }}:${{ env.CONTAINER_IMAGE_VERSION }}
