@@ -23,7 +23,7 @@ deploy:
       - name: kyverno
         repo: https://kyverno.github.io/kyverno/
         remoteChart: kyverno
-        version: 2.7.0-rc.4
+        version: 2.7.2
         namespace: kyverno
         createNamespace: true
       - name: yugabyte
