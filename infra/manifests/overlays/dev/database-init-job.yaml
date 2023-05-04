@@ -20,7 +20,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: database-init
-          image: ghcr.io/carhartl/golang-k8s-playground/database-init
+          image: ghcr.io/carhartl/k8s-playground/database-init
           env:
             - name: PGHOST
               value: "yb-tservers.yugabyte"
