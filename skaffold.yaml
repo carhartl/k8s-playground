@@ -7,9 +7,9 @@ manifests:
       - infra/manifests/overlays/dev
 build:
   artifacts:
-    - image: ghcr.io/carhartl/golang-k8s-playground/app
+    - image: ghcr.io/carhartl/k8s-playground/app
       context: app
-    - image: ghcr.io/carhartl/golang-k8s-playground/database-init
+    - image: ghcr.io/carhartl/k8s-playground/database-init
       context: data
 deploy:
   helm:
