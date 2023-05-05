@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-signed-image
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: verify-image
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      verifyImages:
+        - imageReferences:
+            - "ghcr.io/carhartl/*"
+          mutateDigest: false
+          attestors:
+            - entries:
+                - keyless:
+                    subject: "https://github.com/carhartl/k8s-playground/.github/workflows/pipeline.yml@refs/main"
+                    issuer: "https://token.actions.githubusercontent.com"
+                    additionalExtensions:
+                      githubWorkflowTrigger: push
+                      githubWorkflowName: pipeline.yml
+                      githubWorkflowRepository: carhartl/k8s-playground
+                    rekor:
+                      url: https://rekor.sigstore.dev
