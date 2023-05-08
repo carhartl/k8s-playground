@@ -4,7 +4,7 @@ kind: Config
 manifests:
   kustomize:
     paths:
-      - infra/manifests/overlays/dev
+      - infra/manifests/dev
 build:
   artifacts:
     - image: ghcr.io/carhartl/k8s-playground/app
