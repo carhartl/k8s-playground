@@ -3,8 +3,10 @@ kind: ClusterPolicy
 metadata:
   name: require-signed-image
 spec:
-  validationFailureAction: Audit
-  background: true
+  validationFailureAction: Enforce
+  background: false
+  webhookTimeoutSeconds: 30
+  failurePolicy: Fail
   rules:
     - name: verify-image
       match:
@@ -15,7 +17,6 @@ spec:
       verifyImages:
         - imageReferences:
             - "ghcr.io/carhartl/*"
-          mutateDigest: false
           attestors:
             - entries:
                 - keyless:
