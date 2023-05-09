@@ -29,9 +29,6 @@ spec:
       containers:
         - name: people
           image: ghcr.io/carhartl/k8s-playground/app
-          # Cannot use along with skaffold's image name replacement (it attempts to pull leading to an error,
-          # there is no registry to pull from..)
-          # imagePullPolicy: Always
           env:
             - name: PGHOST
               value: "yb-tservers.yugabyte"
