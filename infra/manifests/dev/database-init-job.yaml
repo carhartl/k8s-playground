@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: database-init
-  namespace: playground
 spec:
   ttlSecondsAfterFinished: 300
   template:
