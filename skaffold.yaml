@@ -46,8 +46,23 @@ deploy:
       # => CustomResourceDefinition.apiextensions.k8s.io "policies.kyverno.io" is invalid:
       #    metadata.annotations: Too long: must have at most 262144 bytes
       apply: ["--server-side"]
-portForward:
-  - resourceType: deployment
-    resourceName: people
-    namespace: playground
-    port: 8888
+profiles:
+  - name: dev
+    activation:
+      - command: dev
+    deploy:
+      kubeContext: minikube
+    portForward:
+      - resourceType: deployment
+        resourceName: people
+        namespace: playground
+        port: 8888
+  - name: gke
+    activation:
+      - command: run
+    manifests:
+      kustomize:
+        paths:
+          - infra/manifests/gke
+    deploy:
+      kubeContext: gke

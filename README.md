@@ -40,3 +40,9 @@ Access the database:
 ```bash
 kubectl -n yugabyte exec -it yb-tserver-0 -- sh -c "cd /home/yugabyte && ysqlsh -h yb-tserver-0 --echo-queries"
 ```
+
+## Deploy to GKE
+
+```bash
+skaffold run
+```
