@@ -35,6 +35,12 @@ deploy:
         setValues:
           podSecurityStandard: restricted
           validationFailureAction: enforce
+          validationFailureActionOverrides:
+            all:
+              - action: audit
+                namespaces:
+                  - monitoring
+                  - yugabyte
       - name: yugabyte
         repo: https://charts.yugabyte.com
         remoteChart: yugabyte
