@@ -74,6 +74,11 @@ profiles:
         resourceName: people
         namespace: playground
         port: 8888
+      - resourceType: service
+        resourceName: kube-prometheus-stack-grafana
+        namespace: monitoring
+        port: 80
+        localPort: 3000
   - name: gke
     activation:
       - command: run
