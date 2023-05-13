@@ -33,6 +33,16 @@ Start continuous local development with Skaffold:
 skaffold dev
 ```
 
+## Monitoring
+
+Grafana dashboard:
+
+```bash
+kubectl port-forward service/kube-prometheus-stack-grafana 3000:80
+```
+
+User: admin, password: prom-operator
+
 ## Database
 
 Access the database:
