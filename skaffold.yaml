@@ -58,9 +58,10 @@ deploy:
           resource.tserver.requests.memory: 0.5Gi
   kubectl:
     flags:
-      # => CustomResourceDefinition.apiextensions.k8s.io "policies.kyverno.io" is invalid:
-      #    metadata.annotations: Too long: must have at most 262144 bytes
-      apply: ["--server-side"]
+      # Apply server-side, so we don't run into:
+      #   CustomResourceDefinition.apiextensions.k8s.io "policies.kyverno.io" is invalid:
+      #     metadata.annotations: Too long: must have at most 262144 bytes
+      apply: ["--server-side", "--namespace=playground"]
 profiles:
   - name: dev
     activation:
