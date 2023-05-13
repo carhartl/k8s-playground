@@ -60,7 +60,6 @@ deploy:
               - action: audit
                 namespaces:
                   - monitoring
-                  - yugabyte
       - name: yugabyte
         repo: https://charts.yugabyte.com
         remoteChart: yugabyte
