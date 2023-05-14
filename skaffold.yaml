@@ -36,6 +36,33 @@ deploy:
                       path: /var/lib/grafana/dashboards/kyverno
             dashboardsConfigMaps:
               kyverno: kyverno-grafana
+      - name: kuberhealthy
+        repo: https://kuberhealthy.github.io/kuberhealthy/helm-repos
+        remoteChart: kuberhealthy
+        version: "92"
+        namespace: kuberhealthy
+        createNamespace: true
+        setValues:
+          prometheus:
+            enabled: true
+            serviceMonitor:
+              enabled: true
+              release: kube-prometheus-stack
+              namespace: monitoring
+              endpoints:
+                # https://github.com/kuberhealthy/kuberhealthy/issues/726
+                bearerTokenFile: ""
+            prometheusRule:
+              enabled: true
+              release: kube-prometheus-stack
+              namespace: monitoring
+          check:
+            daemonset:
+              enabled: false
+            deployment:
+              enabled: false
+            dnsInternal:
+              enabled: false
       - name: kyverno
         repo: https://kyverno.github.io/kyverno/
         remoteChart: kyverno
@@ -98,6 +125,11 @@ profiles:
         namespace: monitoring
         port: 80
         localPort: 3000
+      - resourceType: service
+        resourceName: kuberhealthy
+        namespace: kuberhealthy
+        port: 80
+        localPort: 3001
   - name: gke
     activation:
       - command: run

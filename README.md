@@ -38,10 +38,20 @@ skaffold dev
 Grafana dashboard:
 
 ```bash
-kubectl port-forward service/kube-prometheus-stack-grafana 3000:80
+kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 3000:80
 ```
 
-User: admin, password: prom-operator
+(user: admin, password: prom-operator)
+
+_Note: skaffold sets up port forwarding in `dev` mode._
+
+Kuberhealthy:
+
+```bash
+kubectl port-forward -n kuberhealthy svc/kuberhealthy 3001:80
+```
+
+_Note: skaffold sets up port forwarding in `dev` mode._
 
 ## Database
 
