@@ -39,11 +39,11 @@ spec:
             readOnlyRootFilesystem: true
           resources:
             limits:
-              cpu: 500m
+              cpu: 250m
               memory: 100Mi
               ephemeral-storage: 10Mi
             requests:
-              cpu: 500m
+              cpu: 250m
               memory: 100Mi
               ephemeral-storage: 10Mi
       initContainers:
@@ -58,11 +58,11 @@ spec:
           resources:
             limits:
               cpu: 25m
-              memory: 10Mi
+              memory: 100Mi
               ephemeral-storage: 10Mi
             requests:
               cpu: 25m
-              memory: 10Mi
+              memory: 100Mi
               ephemeral-storage: 10Mi
           command:
             [

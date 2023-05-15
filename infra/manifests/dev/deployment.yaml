@@ -87,9 +87,9 @@ spec:
           resources:
             limits:
               cpu: 25m
-              memory: 10Mi
+              memory: 100Mi
               ephemeral-storage: 10Mi
             requests:
               cpu: 25m
-              memory: 10Mi
+              memory: 100Mi
               ephemeral-storage: 10Mi
