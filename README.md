@@ -61,6 +61,16 @@ Access the database:
 kubectl -n yugabyte exec -it yb-tserver-0 -- sh -c "cd /home/yugabyte && ysqlsh -h yb-tserver-0 --echo-queries"
 ```
 
+## Provision Cluster on GKE
+
+Requires configured gcloud SDK: https://developer.hashicorp.com/terraform/tutorials/kubernetes/gke#prerequisites
+
+```bash
+cd infra/terraform
+terraform init
+terraform apply
+```
+
 ## Deploy to GKE
 
 ```bash
