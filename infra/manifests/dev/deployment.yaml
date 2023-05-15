@@ -48,11 +48,11 @@ spec:
             readOnlyRootFilesystem: true
           resources:
             limits:
-              cpu: 500m
+              cpu: 250m
               memory: 100Mi
               ephemeral-storage: 1Gi
             requests:
-              cpu: 500m
+              cpu: 250m
               memory: 100Mi
               ephemeral-storage: 1Gi
           ports:
@@ -86,10 +86,10 @@ spec:
             readOnlyRootFilesystem: true
           resources:
             limits:
-              cpu: 500m
-              memory: 100Mi
+              cpu: 25m
+              memory: 10Mi
               ephemeral-storage: 10Mi
             requests:
-              cpu: 500m
-              memory: 100Mi
+              cpu: 25m
+              memory: 10Mi
               ephemeral-storage: 10Mi
