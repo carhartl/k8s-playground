@@ -3,6 +3,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespace.yaml
+  - kuberhealthy-dashboard-cm.yaml
+  - kyverno-dashboard-cm.yaml
 patches:
   # It appears that in Yugabyte's helm chart the namespace value isn't picked up in the
   # template for the services. Thus these ended up in "default", breaking accessing the db
