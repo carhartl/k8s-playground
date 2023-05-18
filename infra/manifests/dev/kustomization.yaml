@@ -9,3 +9,4 @@ resources:
   - service.yaml
   - pod-disruption-budget.yaml
   - rbac-service-account.yaml
+  - people-api-check.yaml
