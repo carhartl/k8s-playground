@@ -24,7 +24,7 @@ brew install golangci-lint lefthook prettier yamllint && lefthook install
 Start local K8s cluster (make sure the resources to start minikube with are in line with what is configured in Docker Desktop):
 
 ```bash
-minikube start --memory=4096 --cpus=4 --disk-size=30g
+minikube start --memory=4096 --cpus=4 --disk-size=30g --kubernetes-version 1.26.3
 ```
 
 Start continuous local development with Skaffold:
