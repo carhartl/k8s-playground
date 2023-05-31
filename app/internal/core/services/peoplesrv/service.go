@@ -12,9 +12,9 @@ type service struct {
 	peopleRepository ports.PeopleRepository
 }
 
-func New(peopleRepository ports.PeopleRepository) service {
+func New(repo ports.PeopleRepository) service {
 	return service{
-		peopleRepository: peopleRepository,
+		peopleRepository: repo,
 	}
 }
 

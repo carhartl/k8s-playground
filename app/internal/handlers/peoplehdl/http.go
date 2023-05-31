@@ -9,10 +9,6 @@ import (
 	"github.com/google/uuid"
 )
 
-type HTTPHandler struct {
-	peopleService ports.PeopleService
-}
-
 type personDTO struct {
 	Email     string    `json:"email,omitempty"`
 	FirstName string    `json:"firstName,omitempty"`
@@ -20,9 +16,13 @@ type personDTO struct {
 	Uuid      uuid.UUID `json:"uuid,omitempty"`
 }
 
-func New(peopleService ports.PeopleService) HTTPHandler {
+type HTTPHandler struct {
+	peopleService ports.PeopleService
+}
+
+func New(srv ports.PeopleService) HTTPHandler {
 	return HTTPHandler{
-		peopleService: peopleService,
+		peopleService: srv,
 	}
 }
 

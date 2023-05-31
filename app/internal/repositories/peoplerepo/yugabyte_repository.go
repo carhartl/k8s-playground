@@ -9,11 +9,6 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type yugabyteRepository struct {
-	ports.PeopleRepository
-	db *gorm.DB
-}
-
 type person struct {
 	Email     string    `gorm:"column:email"`
 	FirstName string    `gorm:"column:first_name"`
@@ -26,24 +21,29 @@ var (
 	ErrNotFound = gorm.ErrRecordNotFound
 )
 
+type yugabyteRepository struct {
+	ports.PeopleRepository
+	db *gorm.DB
+}
+
 func New(db *gorm.DB) ports.PeopleRepository {
 	return yugabyteRepository{
 		db: db,
 	}
 }
 
-func (r yugabyteRepository) Save(newPerson domain.Person) error {
+func (repo yugabyteRepository) Save(newPerson domain.Person) error {
 	new := person(newPerson)
-	res := r.db.Create(&new)
+	res := repo.db.Create(&new)
 	if res.Error != nil {
 		return res.Error
 	}
 	return nil
 }
 
-func (r yugabyteRepository) FindByID(id string) (domain.Person, error) {
+func (repo yugabyteRepository) FindByID(id string) (domain.Person, error) {
 	var person person
-	res := r.db.Where("id::text = ?", id).First(&person)
+	res := repo.db.Where("id::text = ?", id).First(&person)
 	if errors.Is(res.Error, ErrNotFound) {
 		return domain.Person{}, ErrNotFound
 	}
