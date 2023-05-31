@@ -20,13 +20,13 @@ type personDTO struct {
 	Uuid      uuid.UUID `json:"uuid,omitempty"`
 }
 
-func New(peopleService ports.PeopleService) *HTTPHandler {
-	return &HTTPHandler{
+func New(peopleService ports.PeopleService) HTTPHandler {
+	return HTTPHandler{
 		peopleService: peopleService,
 	}
 }
 
-func (hdl *HTTPHandler) Get(c *gin.Context) {
+func (hdl HTTPHandler) Get(c *gin.Context) {
 	person, err := hdl.peopleService.Get(c.Param("id"))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": err.Error()})
@@ -35,7 +35,7 @@ func (hdl *HTTPHandler) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, personDTO(person))
 }
 
-func (hdl *HTTPHandler) Create(c *gin.Context) {
+func (hdl HTTPHandler) Create(c *gin.Context) {
 	var pdto personDTO
 	if err := c.ShouldBindJSON(&pdto); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})

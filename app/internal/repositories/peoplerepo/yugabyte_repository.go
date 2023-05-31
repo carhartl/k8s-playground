@@ -27,12 +27,12 @@ var (
 )
 
 func New(db *gorm.DB) ports.PeopleRepository {
-	return &yugabyteRepository{
+	return yugabyteRepository{
 		db: db,
 	}
 }
 
-func (r *yugabyteRepository) Save(newPerson domain.Person) error {
+func (r yugabyteRepository) Save(newPerson domain.Person) error {
 	new := person(newPerson)
 	res := r.db.Create(&new)
 	if res.Error != nil {
@@ -41,7 +41,7 @@ func (r *yugabyteRepository) Save(newPerson domain.Person) error {
 	return nil
 }
 
-func (r *yugabyteRepository) FindByID(id string) (domain.Person, error) {
+func (r yugabyteRepository) FindByID(id string) (domain.Person, error) {
 	var person person
 	res := r.db.Where("id::text = ?", id).First(&person)
 	if errors.Is(res.Error, ErrNotFound) {

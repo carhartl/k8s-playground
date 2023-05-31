@@ -12,13 +12,13 @@ type service struct {
 	peopleRepository ports.PeopleRepository
 }
 
-func New(peopleRepository ports.PeopleRepository) *service {
-	return &service{
+func New(peopleRepository ports.PeopleRepository) service {
+	return service{
 		peopleRepository: peopleRepository,
 	}
 }
 
-func (srv *service) Get(id string) (domain.Person, error) {
+func (srv service) Get(id string) (domain.Person, error) {
 	person, err := srv.peopleRepository.FindByID(id)
 	if err != nil {
 		return domain.Person{}, errors.New("Finding person in repository has failed")
@@ -26,7 +26,7 @@ func (srv *service) Get(id string) (domain.Person, error) {
 	return person, nil
 }
 
-func (srv *service) Create(person domain.Person) (domain.Person, error) {
+func (srv service) Create(person domain.Person) (domain.Person, error) {
 	person.Uuid = uuid.New()
 	if err := srv.peopleRepository.Save(person); err != nil {
 		return domain.Person{}, errors.New("Creating person in repository has failed")
