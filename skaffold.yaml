@@ -4,6 +4,7 @@ kind: Config
 manifests:
   kustomize:
     paths:
+      - infra/manifests/argocd
       - infra/manifests/dev
 build:
   artifacts:
@@ -83,7 +84,6 @@ deploy:
           resource.tserver.requests.cpu: 0.5
           resource.tserver.requests.memory: 0.5Gi
   kubectl:
-    defaultNamespace: "playground"
     flags:
       # Apply server-side, so we don't run into:
       #   CustomResourceDefinition.apiextensions.k8s.io "policies.kyverno.io" is invalid:
