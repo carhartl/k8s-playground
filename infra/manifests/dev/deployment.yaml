@@ -30,6 +30,14 @@ spec:
         - name: people
           image: ghcr.io/carhartl/k8s-playground/app
           env:
+            - name: GOMEMLIMIT
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.memory
+            - name: GOMAXPROCS
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.cpu
             - name: PGHOST
               value: "yb-tservers.yugabyte"
             - name: PGPORT
