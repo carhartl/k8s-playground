@@ -1,14 +1,19 @@
 {
+  "include": ["github:carhartl/lefthook-config?dir=devbox-plugin"],
   "packages": [
     "go@1.21",
     "golangci-lint@latest",
     "gotest@latest",
     "kubectl@1.26.3",
     "kustomize@latest",
+    "lefthook@latest",
     "minikube@latest",
     "skaffold@latest"
   ],
   "shell": {
-    "init_hook": ["export PS1=\"${PS1/\\(devbox\\)/📦}\""]
+    "init_hook": ["export PS1=\"${PS1/\\(devbox\\)/📦}\""],
+    "scripts": {
+      "setup-hooks": ["lefthook install"]
+    }
   }
 }
