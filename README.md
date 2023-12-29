@@ -11,6 +11,13 @@
 brew install helm kubectl kustomize minikube skaffold
 ```
 
+Use [Devbox](https://www.jetpack.io/devbox/docs/installing_devbox/) to install instead of Homebrew:
+
+```bash
+devbox install
+devbox shell
+```
+
 ## Development
 
 Start local K8s cluster (make sure the resources to start minikube with are in line with what is configured in Docker Desktop):
