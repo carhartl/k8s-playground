@@ -11,12 +11,10 @@
 brew install helm kubectl kustomize minikube skaffold
 ```
 
-(Installing `kubectl` is not strictly necessary, Minikube comes with kubectl as well...)
-
-Optional, when using the [Lefthook](https://github.com/evilmartians/lefthook) based Git hooks setup:
+To install the [Lefthook](https://github.com/evilmartians/lefthook) based Git hooks setup:
 
 ```bash
-brew install golangci-lint lefthook prettier yamllint && lefthook install
+bash -c "$(curl --silent https://raw.githubusercontent.com/carhartl/lefthook-config/main/install.sh)"
 ```
 
 ## Development
