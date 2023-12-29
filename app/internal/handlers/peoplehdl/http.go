@@ -5,8 +5,8 @@ import (
 
 	"github.com/carhartl/playground/internal/core/domain"
 	"github.com/carhartl/playground/internal/core/ports"
-	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/labstack/echo/v4"
 )
 
 type personDTO struct {
@@ -26,25 +26,22 @@ func New(srv ports.PeopleService) HTTPHandler {
 	}
 }
 
-func (hdl HTTPHandler) Get(c *gin.Context) {
+func (hdl HTTPHandler) Get(c echo.Context) error {
 	person, err := hdl.peopleService.Get(c.Param("id"))
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": err.Error()})
-		return
+		return err
 	}
-	c.JSON(http.StatusOK, personDTO(person))
+	return c.JSON(http.StatusOK, personDTO(person))
 }
 
-func (hdl HTTPHandler) Create(c *gin.Context) {
+func (hdl HTTPHandler) Create(c echo.Context) error {
 	var pdto personDTO
-	if err := c.ShouldBindJSON(&pdto); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
+	if err := c.Bind(&pdto); err != nil {
+		return err
 	}
 	person, err := hdl.peopleService.Create(domain.Person(pdto))
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-		return
+		return err
 	}
-	c.JSON(http.StatusOK, personDTO(person))
+	return c.JSON(http.StatusOK, personDTO(person))
 }

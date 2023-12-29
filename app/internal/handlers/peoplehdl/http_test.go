@@ -2,19 +2,17 @@ package peoplehdl
 
 import (
 	"net/http"
+	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/carhartl/playground/internal/core/domain"
 	"github.com/carhartl/playground/internal/core/ports"
-	"github.com/gavv/httpexpect/v2"
-	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/labstack/echo/v4"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
-
-func init() {
-	gin.SetMode(gin.TestMode)
-}
 
 type mockService struct {
 	ports.PeopleService
@@ -35,50 +33,32 @@ func TestGet(t *testing.T) {
 
 	srv := new(mockService)
 	srv.On("Get", uuid).Return(uuid, nil)
-	handler := New(srv)
+	hdl := New(srv)
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+	c.SetPath("/people/:id")
+	c.SetParamNames("id")
+	c.SetParamValues(uuid)
 
-	engine := gin.New()
-	engine.GET("/people/:id", handler.Get)
-	e := httpexpect.WithConfig(httpexpect.Config{
-		Client: &http.Client{
-			Transport: httpexpect.NewBinder(engine),
-			Jar:       httpexpect.NewCookieJar(),
-		},
-		Reporter: httpexpect.NewAssertReporter(t),
-		Printers: []httpexpect.Printer{
-			httpexpect.NewDebugPrinter(t, true),
-		},
-	})
-
-	e.GET("/people/" + uuid).
-		Expect().
-		Status(http.StatusOK).
-		JSON().Object().ContainsKey("uuid").ContainsValue(uuid)
+	if assert.NoError(t, hdl.Get(c)) {
+		assert.Equal(t, http.StatusOK, rec.Code)
+		assert.JSONEq(t, `{"uuid":"3d298c59-ff91-4b43-b00c-378511474275"}`, rec.Body.String())
+	}
 }
 
 func TestCreate(t *testing.T) {
-	handler := New(new(mockService))
+	hdl := New(new(mockService))
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(`{"firstName":"foo"}`))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
 
-	engine := gin.New()
-	engine.POST("/people", handler.Create)
-	e := httpexpect.WithConfig(httpexpect.Config{
-		Client: &http.Client{
-			Transport: httpexpect.NewBinder(engine),
-			Jar:       httpexpect.NewCookieJar(),
-		},
-		Reporter: httpexpect.NewAssertReporter(t),
-		Printers: []httpexpect.Printer{
-			httpexpect.NewDebugPrinter(t, true),
-		},
-	})
-
-	e.POST("/people").
-		Expect().
-		Status(http.StatusBadRequest)
-
-	e.POST("/people").WithBytes([]byte(`{"firstName":"foo"}`)).
-		Expect().
-		Status(http.StatusOK).
-		JSON().Object().ContainsKey("firstName")
-
+	if assert.NoError(t, hdl.Create(c)) {
+		assert.Equal(t, http.StatusOK, rec.Code)
+		// The uuid below is the zero value due to mocking the service...
+		assert.JSONEq(t, `{"uuid":"00000000-0000-0000-0000-000000000000", "firstName":"foo"}`, rec.Body.String())
+	}
 }
