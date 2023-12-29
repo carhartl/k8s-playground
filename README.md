@@ -11,12 +11,6 @@
 brew install helm kubectl kustomize minikube skaffold
 ```
 
-To install the [Lefthook](https://github.com/evilmartians/lefthook) based Git hooks setup:
-
-```bash
-bash -c "$(curl --silent https://raw.githubusercontent.com/carhartl/lefthook-config/main/install.sh)"
-```
-
 ## Development
 
 Start local K8s cluster (make sure the resources to start minikube with are in line with what is configured in Docker Desktop):
