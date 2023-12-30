@@ -11,7 +11,10 @@
     "skaffold@latest"
   ],
   "shell": {
-    "init_hook": ["export PS1=\"${PS1/\\(devbox\\)/📦}\""],
+    "init_hook": [
+      "export PS1=\"${PS1/\\(devbox\\)/📦}\"",
+      "shell=$(basename $SHELL); if [ $shell = 'zsh' ]; then $($shell -c 'autoload -U +X compinit && compinit; source <(kubectl completion zsh)'); fi"
+    ],
     "scripts": {
       "setup-hooks": ["lefthook install"]
     }
