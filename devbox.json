@@ -1,14 +1,13 @@
 {
-  "include": ["github:carhartl/lefthook-config?dir=devbox-plugin"],
   "packages": [
     "go@1.21",
     "golangci-lint@latest",
     "gotest@latest",
     "kubectl@1.26.3",
     "kustomize@latest",
-    "lefthook@latest",
     "minikube@latest",
-    "skaffold@latest"
+    "skaffold@latest",
+    "github:carhartl/lefthook-config#default"
   ],
   "shell": {
     "init_hook": [
