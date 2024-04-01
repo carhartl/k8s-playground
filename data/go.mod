@@ -3,7 +3,7 @@ module db-init
 go 1.21
 
 require (
-	github.com/go-faker/faker/v4 v4.3.0
+	github.com/go-faker/faker/v4 v4.4.0
 	github.com/yugabyte/pgx/v4 v4.14.3
 )
 
